@@ -26,8 +26,7 @@ engaging, while accommodating those who wish to monitor more advanced parameters
 ### User stories
 
 A first iteration:
-- As a user, I want to be able to add a planet to a solar system
+- As a user, I want to be able to observe solar system evolution over time and adjust the time steps
+- As a user, I want to be able to add planets to a solar system
 - As a user, I want to be able to define initial orbital parameters for a planet upon creation
 - As a user, I want to be able to view a list of current planets in the solar system and their orbital parameters
-- As a user, I want to be able to observe solar system evolution over time and adjust the time steps
-- As a user, I want to be able to save a solar system to revisit later 
