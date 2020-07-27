@@ -14,7 +14,8 @@ class PlanetTest {
     public Planet testPlanet2;
     public String testPlanetName1 = "test1";
     public String testPlanetName2 = "test2";
-    public Color testPlanetColor = Color.red;;
+    public Color testPlanetColor = Color.red;
+    ;
 
     PlanetTest() {
 
@@ -22,8 +23,8 @@ class PlanetTest {
 
     @BeforeEach
     public void setup() {
-        testPlanet1 = new Planet((6 * Math.pow(10, 24)),0,0, 1000,1000, testPlanetName1, testPlanetColor);
-        testPlanet2 = new Planet((6 * Math.pow(10, 12)),50,50,500,500, testPlanetName2, testPlanetColor);
+        testPlanet1 = new Planet((6 * Math.pow(10, 24)), 0, 0, 1000, 1000, testPlanetName1, testPlanetColor);
+        testPlanet2 = new Planet((6 * Math.pow(10, 12)), 50, 50, 500, 500, testPlanetName2, testPlanetColor);
     }
 
     @Test
