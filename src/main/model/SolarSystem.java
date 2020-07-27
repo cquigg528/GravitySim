@@ -16,10 +16,43 @@ public class SolarSystem {
         solarSystem = new ArrayList<>();
     }
 
-    // TODO !!
     // MODIFIES: this
     // EFFECTS: adds planet to system
-    public void addPlanet(Planet testPlanet2) {
-        // stub
+    public void addPlanet(Planet planet) {
+        solarSystem.add(planet);
+    }
+
+    // REQUIRES: non-empty solar system
+    // EFFECTS: returns name of Planet at index
+    public String getPlanetName(int index) {
+        return solarSystem.get(index).getName();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates force components for all bodies in SolarSystem
+    public void updateForces() {
+        for (Planet body1 : solarSystem) {
+            for (Planet body2 : solarSystem) {
+                if (!body1.equals(body2)) {
+                    body1.updateForce(body2);
+                }
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates velocity components for all bodies in SolarSystem
+    public void updateVelocities() {
+        for (Planet body : solarSystem) {
+            body.updateVelocity();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates position coordinates for all bodies in SolarSystem
+    public void updatePositions() {
+        for (Planet body : solarSystem) {
+            body.updatePosition();
+        }
     }
 }

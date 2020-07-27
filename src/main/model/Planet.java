@@ -8,19 +8,18 @@ import static model.SolarSystem.gravitationalConstant;
 
 // Represents a planet having a 2D position, velocity, name and color
 public class Planet {
-    public double mass;           // planet mass[kg]
+    public double mass;             // planet mass[kg]
     public double xpos;             // x position[meters]
     public double ypos;             // y position[meters]
     public double xvel;             // x velocity[meters / second]
     public double yvel;             // y velocity[meters / second]
-    public double netForceX;            // net force felt by planet in x direction[N]
-    public double netForceY;            // net force felt by planet in y direction[N]
+    public double netForceX;        // net force felt by planet in x direction[N]
+    public double netForceY;        // net force felt by planet in y direction[N]
     public String name;
     public Color color;
 
     public double deltaT = 60;       // time step [seconds]
     public static double coefficient = centralMass * gravitationalConstant;
-
 
 
     // constructor
@@ -86,21 +85,18 @@ public class Planet {
         return netForceY;
     }
 
+    // REQUIRES: body is not null
     // MODIFIES: this
     // EFFECTS: calculates net force components resulting from other planets in the solar system
-    public void updateForce(ArrayList<Planet> system) {
-        for (Planet body : system) {
-            if (!this.equals(body)) {
-                double radius = this.separation(body);
-                double massProduct = this.getMass() * body.getMass();
-                double radiusXComponent = body.getXPosition() - this.getXPosition();
-                double radiusYComponent = body.getYPosition() - this.getYPosition();
-                double fx = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusXComponent;
-                double fy = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusYComponent;
-                this.netForceX += fx;
-                this.netForceY += fy;
-            }
-        }
+    public void updateForce(Planet body) {
+        double radius = this.separation(body);
+        double massProduct = this.getMass() * body.getMass();
+        double radiusXComponent = body.getXPosition() - this.getXPosition();
+        double radiusYComponent = body.getYPosition() - this.getYPosition();
+        double fx = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusXComponent;
+        double fy = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusYComponent;
+        this.netForceX += fx;
+        this.netForceY += fy;
     }
 
     // MODIFIES: this
