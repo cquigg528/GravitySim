@@ -1,10 +1,14 @@
 package model;
 
 import java.awt.*;
+import java.util.ArrayList;
+
+import static model.SolarSystem.centralMass;
+import static model.SolarSystem.gravitationalConstant;
 
 // Represents a planet having a 2D position, velocity, name and color
 public class Planet {
-    public int mass;           // planet mass[kg]
+    public double mass;           // planet mass[kg]
     public double xpos;             // x position[meters]
     public double ypos;             // y position[meters]
     public double xvel;             // x velocity[meters / second]
@@ -15,7 +19,7 @@ public class Planet {
     public Color color;
 
     public double deltaT = 60;       // time step [seconds]
-    public double coefficient = centralMass * gravitationalConstant;
+    public static double coefficient = centralMass * gravitationalConstant;
 
 
 
@@ -23,7 +27,8 @@ public class Planet {
     /* EFFECTS: creates a new planet at given position with given velocity, with color and name
                 and zero initial net force
     */
-    public Planet(double x, double y, double xv, double yv, String name, Color color) {
+    public Planet(double m, double x, double y, double xv, double yv, String name, Color color) {
+        this.mass = m;
         this.xpos = x;
         this.ypos = y;
         this.xvel = xv;
@@ -34,53 +39,81 @@ public class Planet {
         this.netForceY = netForceX;
     }
 
-    // TODO !!
     // EFFECTS: returns planet name
     public String getName() {
-        return "FINISH!"; // stub
+        return name;
     }
 
-    // TODO!!
+    // EFFECTS: returns planet mass
+    public double getMass() {
+        return mass;
+    }
+
     // EFFECTS: returns x position coordinate
     public double getXPosition() {
-        return 0; //stub
+        return xpos;
     }
 
-    // TODO!!
     // EFFECTS: returns y position coordinate
     public double getYPosition() {
-        return 0; //stub
+        return ypos;
     }
 
-    // TODO !!
+    // EFFECTS: returns magnitude of separation vector with another planet
+    public double separation(Planet p) {
+        double deltaX = xpos - p.getXPosition();
+        double deltaY = ypos - p.getYPosition();
+        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+    }
+
     // EFFECTS: returns x component of velocity
     public double getXVelocity() {
-        return 0; // stub
+        return xvel;
     }
 
-    // TODO !!
     // EFFECTS: returns y component of velocity
     public double getYVelocity() {
-        return 0; // stub
+        return yvel;
     }
 
-    // TODO !!
-    // EFFECTS: calculates and returns orbital period in years
-    public double getPeriod() {
-        return 0; // stub
+    // EFFECTS: returns x component of net force on the planet
+    public double getXForce() {
+        return netForceX;
     }
 
-    // TODO !!
+    // EFFECTS: returns y component of net force on the planet
+    public double getYForce() {
+        return netForceY;
+    }
+
     // MODIFIES: this
-    // EFFECTS: updates planet position coordinates
-    public void updatePosition(double x, double y, double xv, double yv) {
-        // stub
+    // EFFECTS: calculates net force components resulting from other planets in the solar system
+    public void updateForce(ArrayList<Planet> system) {
+        for (Planet body : system) {
+            if (!this.equals(body)) {
+                double radius = this.separation(body);
+                double massProduct = this.getMass() * body.getMass();
+                double radiusXComponent = body.getXPosition() - this.getXPosition();
+                double radiusYComponent = body.getYPosition() - this.getYPosition();
+                double fx = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusXComponent;
+                double fy = gravitationalConstant * (massProduct / Math.pow(radius, 2)) * radiusYComponent;
+                this.netForceX += fx;
+                this.netForceY += fy;
+            }
+        }
     }
 
-    // TODO !!
     // MODIFIES: this
     // EFFECTS: updates planet velocity components
-    public void updateVelocity(double xv, double yv, double dxv, double dyv) {
-        // stub
+    public void updateVelocity() {
+        this.xvel += this.netForceX / this.mass;
+        this.yvel += this.netForceY / this.mass;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates planet position coordinates
+    public void updatePosition() {
+        this.xpos += this.xvel;
+        this.ypos += this.yvel;
     }
 }
