@@ -41,6 +41,14 @@ public class SolarSystemTest {
     }
 
     @Test
+    public void testGetNumPlanets() {
+        SolarSystem emptySolarSystem = new SolarSystem();
+
+        assertEquals(emptySolarSystem.getNumPlanets(), 0);
+        assertEquals(testSolarSystem.getNumPlanets(), 3);
+    }
+
+    @Test
     public void testAddPlanet() {
         Planet testPlanet = new Planet(500, 100, 100, 100, 100, "test", Color.black);
 
@@ -56,6 +64,13 @@ public class SolarSystemTest {
         String test3 = testSolarSystem.getPlanetName(2);
         assertEquals(test1, "test1");
         assertEquals(test3, "test3");
+    }
+
+    @Test
+    public void testGetPlanet() {
+        assertEquals(testPlanet1, testSolarSystem.getPlanet(0));
+        assertEquals(testPlanet2, testSolarSystem.getPlanet(1));
+        assertEquals(testPlanet3, testSolarSystem.getPlanet(2));
     }
 
     @Test

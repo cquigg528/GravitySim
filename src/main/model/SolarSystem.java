@@ -1,13 +1,13 @@
 package model;
 
 
-import java.awt.*;
 import java.util.ArrayList;
 
 // Represents a collection of Planets that comprise a solar system
 public class SolarSystem {
     public static double centralMass = 1.98847 * Math.pow(10, 30);
     public static double gravitationalConstant = 6.67408 * Math.pow(10, -11);
+
     public ArrayList<Planet> solarSystem;
 
     // constructor
@@ -15,6 +15,12 @@ public class SolarSystem {
     public SolarSystem() {
         solarSystem = new ArrayList<>();
     }
+
+    // EFFECTS: returns number of planets in solar system
+    public int getNumPlanets() {
+        return solarSystem.size();
+    }
+
 
     // MODIFIES: this
     // EFFECTS: adds planet to system
@@ -26,6 +32,12 @@ public class SolarSystem {
     // EFFECTS: returns name of Planet at index
     public String getPlanetName(int index) {
         return solarSystem.get(index).getName();
+    }
+
+    // REQUIRES: non-empty solar system
+    // EFFECTS: returns Planet at index
+    public Planet getPlanet(int index) {
+        return solarSystem.get(index);
     }
 
     // MODIFIES: this
