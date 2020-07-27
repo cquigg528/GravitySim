@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 import static model.SolarSystem.centralMass;
 import static model.SolarSystem.gravitationalConstant;
