@@ -25,8 +25,10 @@ engaging, while accommodating those who wish to monitor more advanced parameters
 
 ### User stories
 
-A first iteration:
+A second iteration:
 - As a user, I want to be able to observe solar system evolution over time.
 - As a user, I want to be able to load solar systems already in the program.
 - As a user, I want to be able to define initial orbital parameters for a custom planet upon creation.
 - As a user, I want to be able to view a list of current planets in the solar system.
+- As a user, I want to be given the option to save a solar system to a file when I quit the program
+- As a user, I want to be able to reload a solar system in the exact state I left it.
