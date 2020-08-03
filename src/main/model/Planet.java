@@ -1,12 +1,16 @@
 package model;
 
+import persistence.Reader;
+import persistence.Saveable;
+
 import java.awt.*;
+import java.io.PrintWriter;
 
 import static model.SolarSystem.centralMass;
 import static model.SolarSystem.gravitationalConstant;
 
 // Represents a planet having a 2D position, velocity, name and color
-public class Planet {
+public class Planet implements Saveable {
     public double mass;             // planet mass[kg]
     public double xpos;             // x position[meters]
     public double ypos;             // y position[meters]
@@ -35,6 +39,22 @@ public class Planet {
         this.color = color;
         this.netForceX = 0;
         this.netForceY = netForceX;
+    }
+
+    // constructor
+    // EFFECTS: creates a new planet with all fields specified including net forces
+    public Planet(double m, double x, double y, double xv, double yv,
+                  double forceX, double forceY, String name, Color color) {
+        this.mass = m;
+        this.xpos = x;
+        this.ypos = y;
+        this.xvel = xv;
+        this.yvel = yv;
+        this.name = name;
+        this.color = color;
+        this.netForceX = forceX;
+        this.netForceY = forceY;
+
     }
 
     // EFFECTS: returns planet name
@@ -110,5 +130,26 @@ public class Planet {
     public void updatePosition() {
         this.xpos += this.xvel;
         this.ypos += this.yvel;
+    }
+
+    @Override
+    public void save(PrintWriter printWriter) {
+        printWriter.print(mass);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(xpos);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(ypos);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(xvel);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(yvel);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(netForceX);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(netForceY);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(name);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(color);
     }
 }

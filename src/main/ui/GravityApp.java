@@ -2,19 +2,28 @@ package ui;
 
 import model.Planet;
 import model.SolarSystem;
+import persistence.Reader;
+import persistence.Writer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Scanner;
 
 // Console interaction for Gravity application
 public class GravityApp {
+    private static final String SYSTEMS_FILE = "./data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
     private static final int INTERVAL_STOP = 10000;        // print to console for 10 seconds before stopping
     private Scanner input;
     private SolarSystem solarSystem;
+    private SolarSystem solarSystemFromFile;
 
     // constructor
     // EFFECTS: runs gravity application
@@ -29,6 +38,8 @@ public class GravityApp {
         String command = null;
         input = new Scanner(System.in);
 
+        loadSystemsFromFile();
+
         while (keepGoing) {
             displayMenu();
             command = input.next();
@@ -36,11 +47,51 @@ public class GravityApp {
 
             if (command.equals("quit")) {
                 keepGoing = false;
+                promptSaveQuery();
             } else {
                 processCommand(command);
             }
         }
         System.out.println("\n See you later!");
+    }
+
+    // EFFECTS: saves state of solar system to SYSTEMS_FILE
+    private void promptSaveQuery() {
+        System.out.println("\n Would you like to save the solar system you created? [y/n]");
+        String command = input.next();
+        command = command.toLowerCase();
+
+        int i = 0;
+        if (command.equals("y")) {
+            try {
+                Writer writer = new Writer(new File(SYSTEMS_FILE));
+                while (i < solarSystem.getNumPlanets()) {
+                    writer.write(solarSystem.getPlanet(i));
+                    i++;
+                }
+                writer.close();
+                System.out.println("Accounts saved to file " + SYSTEMS_FILE);
+            } catch (FileNotFoundException e) {
+                System.out.println("Unable to save accounts to " + SYSTEMS_FILE);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads solar systems from SYSTEMS_FILE, if that file exists,
+    // otherwise only loaded system will be Centauri, which is hard coded
+    private void loadSystemsFromFile() {
+        try {
+            List<Planet> planets = Reader.readPlanets(new File(SYSTEMS_FILE));
+            solarSystemFromFile = new SolarSystem();
+            for (Planet planet : planets) {
+                solarSystemFromFile.addPlanet(planet);
+            }
+        } catch (IOException e) {
+
+        }
     }
 
     // EFFECTS: prints menu options to the console

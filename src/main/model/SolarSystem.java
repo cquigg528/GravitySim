@@ -21,7 +21,6 @@ public class SolarSystem {
         return solarSystem.size();
     }
 
-
     // MODIFIES: this
     // EFFECTS: adds planet to system
     public void addPlanet(Planet planet) {
