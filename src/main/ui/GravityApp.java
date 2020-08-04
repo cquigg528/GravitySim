@@ -61,22 +61,26 @@ public class GravityApp {
         String command = input.next();
         command = command.toLowerCase();
 
-        int i = 0;
         if (command.equals("y")) {
-            try {
-                Writer writer = new Writer(new File(SYSTEMS_FILE));
-                while (i < solarSystem.getNumPlanets()) {
-                    Planet planet = solarSystem.getPlanet(i);
-                    writer.write(planet);
-                    i++;
-                }
-                writer.close();
-                System.out.println("Accounts saved to file " + SYSTEMS_FILE);
-            } catch (FileNotFoundException e) {
-                System.out.println("Unable to save accounts to " + SYSTEMS_FILE);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            save();
+        }
+    }
+
+    private void save() {
+        int i = 0;
+        try {
+            Writer writer = new Writer(new File(SYSTEMS_FILE));
+            while (i < solarSystem.getNumPlanets()) {
+                Planet planet = solarSystem.getPlanet(i);
+                writer.write(planet);
+                i++;
             }
+            writer.close();
+            System.out.println("Accounts saved to file " + SYSTEMS_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save accounts to " + SYSTEMS_FILE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -91,7 +95,7 @@ public class GravityApp {
                 solarSystemFromFile.addPlanet(planet);
             }
         } catch (IOException e) {
-
+            System.out.println(SYSTEMS_FILE + " not found");
         }
     }
 
@@ -138,8 +142,6 @@ public class GravityApp {
     // MODIFIES: Planet object and this
     // EFFECTS: adds a user-defined Planet to this
     private String addAPlanet() {
-        Color desiredColor = null;
-
         // retrieve parameters
         System.out.println("Enter body name:");
         String name = input.next();
@@ -155,8 +157,7 @@ public class GravityApp {
         double yvel = input.nextDouble();
         System.out.println("\n Enter desired color: ");
         String color = input.next();
-        color = color.toLowerCase();
-        desiredColor = handleColor(color);
+        Color desiredColor = handleColor(color.toLowerCase());
 
         // add planet to solar system
         Planet planetToAdd = new Planet(mass, xpos, ypos, xvel, yvel, name, desiredColor);
@@ -170,12 +171,8 @@ public class GravityApp {
             return Color.black;
         } else if (color.equals("blue")) {
             return Color.blue;
-        } else if (color.equals("gray")) {
-            return Color.gray;
         } else if (color.equals("green")) {
             return Color.green;
-        } else if (color.equals("magenta")) {
-            return Color.magenta;
         } else if (color.equals("orange")) {
             return Color.orange;
         } else if (color.equals("pink")) {
