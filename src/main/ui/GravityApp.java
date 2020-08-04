@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 // Console interaction for Gravity application
 public class GravityApp {
-    private static final String SYSTEMS_FILE = "./data/systems.txt";
+    private static final String SYSTEMS_FILE = "./Gravity/data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
     private static final int INTERVAL_STOP = 10000;        // print to console for 10 seconds before stopping
     private Scanner input;
@@ -46,8 +46,8 @@ public class GravityApp {
             command = command.toLowerCase();
 
             if (command.equals("quit")) {
-                keepGoing = false;
                 promptSaveQuery();
+                keepGoing = false;
             } else {
                 processCommand(command);
             }
@@ -66,7 +66,8 @@ public class GravityApp {
             try {
                 Writer writer = new Writer(new File(SYSTEMS_FILE));
                 while (i < solarSystem.getNumPlanets()) {
-                    writer.write(solarSystem.getPlanet(i));
+                    Planet planet = solarSystem.getPlanet(i);
+                    writer.write(planet);
                     i++;
                 }
                 writer.close();
@@ -129,7 +130,7 @@ public class GravityApp {
             addAnother = addAnother.toLowerCase();
             if (addAnother.equals("n")) {
                 keepAdding = false;
-                handleSolarSystem();
+                handleSolarSystem(solarSystem);
             }
         }
     }
@@ -195,10 +196,13 @@ public class GravityApp {
     private void loadSystem() {
         System.out.println("\n Current solar systems on file:");
         System.out.println("\t - Centauri \n");
-        System.out.println("\n Enter 'centauri' for the Centauri system or 'back' to return to main menu");
+        System.out.println("\n Enter 'centauri' for the Centauri system, 'load' for the last saved system," +
+                " or 'back' to return to main menu");
         String command = input.next();
         command = command.toLowerCase();
-        if (command.equals("centauri")) {
+        if (command.equals("load")) {
+            handleSolarSystem(solarSystemFromFile);
+        } else if (command.equals("centauri")) {
             solarSystem = new SolarSystem();
             Planet centauriA
                     = new Planet((2.2 * Math.pow(10, 30)),
@@ -213,7 +217,7 @@ public class GravityApp {
             solarSystem.addPlanet(centauriA);
             solarSystem.addPlanet(centauriB);
             solarSystem.addPlanet(proximaCentauri);
-            handleSolarSystem();
+            handleSolarSystem(solarSystem);
         } else if (command.equals("back")) {
             runGravity();
         }
@@ -221,7 +225,7 @@ public class GravityApp {
 
     // MODIFIES: this
     // EFFECTS: either prints Planets in system or evolves system
-    private void handleSolarSystem() {
+    private void handleSolarSystem(SolarSystem system) {
         System.out.println("\n What would you like to do with your Solar System?");
         System.out.println("\t inspect -> View list of bodies in your system");
         System.out.println("\t evolve -> Watch your system move");
@@ -229,11 +233,11 @@ public class GravityApp {
         String command = input.next();
         command = command.toLowerCase();
         if (command.equals("inspect")) {
-            printPlanetList();
-            handleSolarSystem();
+            printPlanetList(system);
+            handleSolarSystem(system);
         } else if (command.equals("evolve")) {
-            evolve();
-            handleSolarSystem();
+            evolve(system);
+            handleSolarSystem(system);
         } else if (command.equals("back")) {
             runGravity();
         } else {
@@ -242,25 +246,25 @@ public class GravityApp {
     }
 
     // EFFECTS: prints names of Planets in the solar system
-    public void printPlanetList() {
+    public void printPlanetList(SolarSystem system) {
         System.out.println("\n Your solar system contains:");
-        int numLoops = solarSystem.getNumPlanets();
+        int numLoops = system.getNumPlanets();
         for (int index = 0; index < numLoops; index++) {
-            String name = solarSystem.getPlanetName(index);
+            String name = system.getPlanetName(index);
             System.out.println("\t -" + name);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: evolves system and prints changing parameters to the screen for INTERVAL_STOP ms
-    public void evolve() {
+    public void evolve(SolarSystem system) {
         Timer appRunTimer = new Timer(INTERVAL_RUN, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                solarSystem.updateForces();
-                solarSystem.updateVelocities();
-                solarSystem.updatePositions();
-                printPlanetMotion();
+                system.updateForces();
+                system.updateVelocities();
+                system.updatePositions();
+                printPlanetMotion(system);
             }
         }
         );
@@ -277,14 +281,14 @@ public class GravityApp {
     }
 
     // EFFECTS: prints Planet name, coordinates, and speed for all planets in solar system
-    public void printPlanetMotion() {
-        int numLoops = solarSystem.getNumPlanets();
+    public void printPlanetMotion(SolarSystem system) {
+        int numLoops = system.getNumPlanets();
         for (int index = 0; index < numLoops; index++) {
-            String name = solarSystem.getPlanetName(index);
-            double xpos = solarSystem.getPlanet(index).getXPosition();
-            double ypos = solarSystem.getPlanet(index).getYPosition();
-            double velocityX = solarSystem.getPlanet(index).getXVelocity();
-            double velocityY = solarSystem.getPlanet(index).getYVelocity();
+            String name = system.getPlanetName(index);
+            double xpos = system.getPlanet(index).getXPosition();
+            double ypos = system.getPlanet(index).getYPosition();
+            double velocityX = system.getPlanet(index).getXVelocity();
+            double velocityY = system.getPlanet(index).getYVelocity();
             double velocity = Math.sqrt((Math.pow(velocityX, 2) + Math.pow(velocityY, 2)));
             System.out.println(name + " Position (" + xpos + ", " + ypos + ")");
             System.out.println("with speed " + velocity + " meters per second");

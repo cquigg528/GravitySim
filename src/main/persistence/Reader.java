@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 // A reader that can read account data from a file
 public class Reader {
-    public static final String DELIMITER = ".";
+    public static final String DELIMITER = ",";
     private static Color color;
 
     // EFFECT: returns a list of planets parsed from file;
@@ -52,12 +52,12 @@ public class Reader {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
-    // REQUIRES: components has size 9 where element 0 represents the mass of the planet,
+    // REQUIRES: components has size 11 where element 0 represents the mass of the planet,
     // element 1 represents the x coordinate, element 2 represents the y coordinate, element
     // 3 represents the x velocity, element 4 represents the y velocity, element 5 represents
     // the net force on the planet in the x direction, element 6 represents the net force on the
     // planet in the y direction, element 7 represents the planets name, and element 8 represents
-    // the planets color
+    // the planets r color value, then element 9 and 10 are the g and b color values respectively
     // EFFECTS: returns a planet constructed from components
     private static Planet parsePlanet(List<String> components) {
         double mass = Double.parseDouble(components.get(0));
@@ -72,27 +72,18 @@ public class Reader {
         // parse and assign saved color
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(components.get(8));
-        if (m.find()) {
-            int red = Integer.parseInt(m.group(0));
-            int green = Integer.parseInt(m.group(1));
-            int blue = Integer.parseInt(m.group(2));
-            color = new Color(red, green, blue);
-        }
+        m.find();
+        int red = Integer.parseInt(m.group());
+        m = p.matcher(components.get(9));
+        m.find();
+        int green = Integer.parseInt(m.group());
+        m = p.matcher(components.get(10));
+        m.find();
+        int blue = Integer.parseInt(m.group());
+        color = new Color(red, green, blue);
+
         return new Planet(mass, xpos, ypos, xvel, yvel, forceX, forceY, name, color);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -77,6 +77,11 @@ public class Planet implements Saveable {
         return ypos;
     }
 
+    // EFFECTS: returns planet color
+    public Color getColor() {
+        return color;
+    }
+
     // EFFECTS: returns magnitude of separation vector with another planet
     public double separation(Planet p) {
         double deltaX = xpos - p.getXPosition();
@@ -150,6 +155,6 @@ public class Planet implements Saveable {
         printWriter.print(Reader.DELIMITER);
         printWriter.print(name);
         printWriter.print(Reader.DELIMITER);
-        printWriter.print(color);
+        printWriter.println(color);
     }
 }
