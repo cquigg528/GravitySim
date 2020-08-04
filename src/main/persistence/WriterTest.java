@@ -61,8 +61,6 @@ public class WriterTest {
             assertEquals("gp", testPlanet2.getName());
             Color testColor2 = new Color(0, 0, 0);
             assertEquals(testColor2, testPlanet2.getColor());
-
-
         } catch (IOException e) {
             fail("IOException should not be thrown");
         }
