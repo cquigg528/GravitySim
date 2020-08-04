@@ -28,14 +28,13 @@ public class WriterTest {
                 23, 27, "geg", Color.blue);
         testPlanet2 = new Planet(0.1, 9, 10, 0.001, 232,
                 400, 12, "gp", Color.black);
-    }
-
-    @Test
-    void testWritePlanets() {
         testWriter.write(testPlanet1);
         testWriter.write(testPlanet2);
         testWriter.close();
+    }
 
+    @Test
+    void testWritePlanet1() {
         try {
             List<Planet> planets = Reader.readPlanets(new File(TEST_FILE));
             Planet testPlanet1 = planets.get(0);
@@ -50,6 +49,18 @@ public class WriterTest {
             Color testColor1 = new Color(0, 0, 255);
             assertEquals(testColor1, testPlanet1.getColor());
 
+        } catch (IOException e) {
+            fail("IOException should not be thrown");
+        }
+    }
+
+    @Test
+    void testWritePlanet2() {
+        testWriter.write(testPlanet2);
+        testWriter.close();
+
+        try {
+            List<Planet> planets = Reader.readPlanets(new File(TEST_FILE));
             Planet testPlanet2 = planets.get(1);
             assertEquals(0.1, testPlanet2.getMass());
             assertEquals(9, testPlanet2.getXPosition());
@@ -61,6 +72,7 @@ public class WriterTest {
             assertEquals("gp", testPlanet2.getName());
             Color testColor2 = new Color(0, 0, 0);
             assertEquals(testColor2, testPlanet2.getColor());
+
         } catch (IOException e) {
             fail("IOException should not be thrown");
         }

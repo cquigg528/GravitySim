@@ -171,6 +171,8 @@ public class GravityApp {
             return Color.black;
         } else if (color.equals("blue")) {
             return Color.blue;
+        } else if (color.equals("gray")) {
+            return Color.gray;
         } else if (color.equals("green")) {
             return Color.green;
         } else if (color.equals("orange")) {
@@ -193,31 +195,35 @@ public class GravityApp {
     private void loadSystem() {
         System.out.println("\n Current solar systems on file:");
         System.out.println("\t - Centauri \n");
-        System.out.println("\n Enter 'centauri' for the Centauri system, 'load' for the last saved system," +
-                " or 'back' to return to main menu");
+        System.out.println("\n Enter 'centauri' for the Centauri system, 'load' for the last saved system,"
+                + " or 'back' to return to main menu");
         String command = input.next();
         command = command.toLowerCase();
         if (command.equals("load")) {
             handleSolarSystem(solarSystemFromFile);
         } else if (command.equals("centauri")) {
-            solarSystem = new SolarSystem();
-            Planet centauriA
-                    = new Planet((2.2 * Math.pow(10, 30)),
-                    200, 10, 10000, 10000, "Centauri A", Color.yellow);
-            Planet centauriB
-                    = new Planet((0.5 * Math.pow(10, 30)),
-                    500, 600, -10000, -10000, "Centauri b", Color.blue);
-            Planet proximaCentauri
-                    = new Planet((0.1 * Math.pow(10, 29)),
-                    300, 150, -1500, 8000, "Proxima Centauri", Color.pink);
-
-            solarSystem.addPlanet(centauriA);
-            solarSystem.addPlanet(centauriB);
-            solarSystem.addPlanet(proximaCentauri);
+            loadCentauriSystem();
             handleSolarSystem(solarSystem);
         } else if (command.equals("back")) {
             runGravity();
         }
+    }
+
+    private void loadCentauriSystem() {
+        solarSystem = new SolarSystem();
+        Planet centauriA
+                = new Planet((2.2 * Math.pow(10, 30)),
+                200, 10, 10000, 10000, "Centauri A", Color.yellow);
+        Planet centauriB
+                = new Planet((0.5 * Math.pow(10, 30)),
+                500, 600, -10000, -10000, "Centauri b", Color.blue);
+        Planet proximaCentauri
+                = new Planet((0.1 * Math.pow(10, 29)),
+                300, 150, -1500, 8000, "Proxima Centauri", Color.pink);
+
+        solarSystem.addPlanet(centauriA);
+        solarSystem.addPlanet(centauriB);
+        solarSystem.addPlanet(proximaCentauri);
     }
 
     // MODIFIES: this
