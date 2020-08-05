@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 // Console interaction for Gravity application
 public class GravityApp {
-    private static final String SYSTEMS_FILE = "./Gravity/data/systems.txt";
+    private static final String SYSTEMS_FILE = "./data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
     private static final int INTERVAL_STOP = 10000;        // print to console for 10 seconds before stopping
     private Scanner input;

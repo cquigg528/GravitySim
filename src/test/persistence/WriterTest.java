@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class WriterTest {
-    private static final String TEST_FILE = "./Gravity/data/testAccounts.txt";
+    private static final String TEST_FILE = "./data/testAccounts.txt";
     private Writer testWriter;
     private Planet testPlanet1;
     private Planet testPlanet2;

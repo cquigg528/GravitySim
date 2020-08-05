@@ -16,7 +16,7 @@ public class ReaderTest {
     @Test
     void testParsePlanetsFile1() {
         try {
-            List<Planet> planets = Reader.readPlanets(new File("./Gravity/data/testPlanetFile1.txt"));
+            List<Planet> planets = Reader.readPlanets(new File("./data/testPlanetFile1.txt"));
             Planet testPlanet = planets.get(0);
             assertEquals(4, testPlanet.getMass());
             assertEquals(2, testPlanet.getXPosition());
