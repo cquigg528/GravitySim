@@ -27,6 +27,7 @@ engaging, while accommodating those who wish to monitor more advanced parameters
 
 A second iteration:
 - As a user, I want to be able to observe solar system evolution over time.
+- As a user, I want to be able to add a planet to a list of planets that comprise a solar system
 - As a user, I want to be able to load solar systems already in the program.
 - As a user, I want to be able to define initial orbital parameters for a custom planet upon creation.
 - As a user, I want to be able to view a list of current planets in the solar system.
