@@ -8,7 +8,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 // The panel in which the simulation is rendered
 public class SimPanel extends JPanel {
@@ -16,14 +16,17 @@ public class SimPanel extends JPanel {
     private static final int HEIGHT = 800;
 
     private GravityApp gravityApp;
+    private JFrame frame;
 
     // Constructs a panel to run the application
     // EFFECTS: sets size and background color of panel,
     // updates this with the game to be displayed
-    public SimPanel(GravityApp gravityApp) {
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.black);
-        this.gravityApp = gravityApp;
+    public SimPanel() {
+        frame = new JFrame("Gravity");
+        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        frame.setBackground(Color.black);
+        frame.setVisible(true);
+        //this.gravityApp = gravityApp;
     }
 
     @Override

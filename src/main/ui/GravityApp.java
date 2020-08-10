@@ -23,9 +23,9 @@ public class GravityApp extends JFrame {
     private Scanner input;
     protected static SolarSystem solarSystem;
 
-    private SimPanel simPanel;
+    private static SimPanel simPanel;
     private MenuPanel menu;
-    private Timer timer;
+    private static Timer timer;
 
     // constructor
     // EFFECTS: runs gravity application
@@ -287,7 +287,8 @@ public class GravityApp extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: evolves system and prints changing parameters to the screen for INTERVAL_STOP ms
-    public void evolve() {
+    public static void evolve() {
+        simPanel = new SimPanel();
         timer = new Timer(INTERVAL_RUN, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

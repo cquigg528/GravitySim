@@ -8,8 +8,7 @@ import javax.swing.*;
 
 import model.Planet;
 
-import static ui.GravityApp.loadCentauriSystem;
-import static ui.GravityApp.save;
+import static ui.GravityApp.*;
 
 // Represents the panel in which the scoreboard is displayed
 public class MenuPanel extends JPanel implements ActionListener {
@@ -149,10 +148,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     private void evolveSystem() {
         // TODO!!!!
-        //gravityApp.evolve();
+        evolve();
 
-        panel = new SimPanel(gravityApp);
-        panel.repaint();
     }
 
     private void showInspectSystemPanel() {
