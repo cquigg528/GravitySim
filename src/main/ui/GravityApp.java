@@ -17,17 +17,29 @@ import java.util.List;
 import java.util.Scanner;
 
 // Console interaction for Gravity application
-public class GravityApp {
+public class GravityApp extends JFrame {
     private static final String SYSTEMS_FILE = "./data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
-    private static final int INTERVAL_STOP = 10000;        // print to console for 10 seconds before stopping
     private Scanner input;
-    private SolarSystem solarSystem;
-    private SolarSystem solarSystemFromFile;
+    private static SolarSystem solarSystem;
+
+    private SimPanel simPanel;
+    private MenuPanel menu;
+    private Timer timer;
 
     // constructor
     // EFFECTS: runs gravity application
     public GravityApp() {
+        super("Gravity Simulator");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        simPanel = new SimPanel(this);
+        menu = new MenuPanel(this);
+        add(simPanel);
+        add(menu, BorderLayout.NORTH);
+        pack();
+        setVisible(true);
+
         runGravity();
     }
 
@@ -55,6 +67,13 @@ public class GravityApp {
         System.out.println("\n See you later!");
     }
 
+    public void draw(Graphics g) {
+        int numLoops = solarSystem.getNumPlanets();
+        for (int i = 0; i < numLoops; i++) {
+            solarSystem.getPlanet(i).drawPlanet(g);
+        }
+    }
+
     // EFFECTS: saves state of solar system to SYSTEMS_FILE
     private void promptSaveQuery() {
         System.out.println("\n Would you like to save the solar system you created? [y/n]");
@@ -66,7 +85,7 @@ public class GravityApp {
         }
     }
 
-    private void save() {
+    protected void save() {
         int i = 0;
         try {
             Writer writer = new Writer(new File(SYSTEMS_FILE));
@@ -76,23 +95,23 @@ public class GravityApp {
                 i++;
             }
             writer.close();
-            System.out.println("Accounts saved to file " + SYSTEMS_FILE);
+            // System.out.println("Accounts saved to file " + SYSTEMS_FILE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to save accounts to " + SYSTEMS_FILE);
+            // System.out.println("Unable to save accounts to " + SYSTEMS_FILE);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
     // MODIFIES: this
     // EFFECTS: loads solar systems from SYSTEMS_FILE, if that file exists,
     // otherwise only loaded system will be Centauri, which is hard coded
-    private void loadSystemsFromFile() {
+    protected static void loadSystemsFromFile() {
         try {
             List<Planet> planets = Reader.readPlanets(new File(SYSTEMS_FILE));
-            solarSystemFromFile = new SolarSystem();
+            solarSystem = new SolarSystem();
             for (Planet planet : planets) {
-                solarSystemFromFile.addPlanet(planet);
+                solarSystem.addPlanet(planet);
             }
         } catch (IOException e) {
             System.out.println(SYSTEMS_FILE + " not found");
@@ -127,49 +146,47 @@ public class GravityApp {
         solarSystem = new SolarSystem();
 
         while (keepAdding) {
-            String name = addAPlanet();
-            System.out.println("\n " + name + " has been added to your Solar System!");
+            //String name = addAPlanet();
+            //System.out.println("\n " + name + " has been added to your Solar System!");
             System.out.println("Would you like to add another celestial body? [y/n] ");
             String addAnother = input.next();
             addAnother = addAnother.toLowerCase();
             if (addAnother.equals("n")) {
                 keepAdding = false;
-                handleSolarSystem(solarSystem);
+                handleSolarSystem();
             }
         }
     }
 
     // MODIFIES: Planet object and this
     // EFFECTS: adds a user-defined Planet to this
-    private String addAPlanet() {
-        // retrieve parameters
-        System.out.println("Enter body name:");
-        String name = input.next();
-        System.out.println("\n Enter mass [kg]: ");
-        double mass = input.nextDouble();
-        System.out.println("\n Enter initial x coordinate [m]: ");
-        double xpos = input.nextDouble();
-        System.out.println("\n Enter initial y coordinate [m]: ");
-        double ypos = input.nextDouble();
-        System.out.println("\n Enter initial x velocity [m/s]: ");
-        double xvel = input.nextDouble();
-        System.out.println("\n Enter initial y velocity [m/s]: ");
-        double yvel = input.nextDouble();
-        System.out.println("\n Enter desired color: ");
-        String color = input.next();
-        Color desiredColor = handleColor(color.toLowerCase());
-
-        // add planet to solar system
-        Planet planetToAdd = new Planet(mass, xpos, ypos, xvel, yvel, name, desiredColor);
-        solarSystem.addPlanet(planetToAdd);
-        return name;
+    protected static void addAPlanet(Planet planet) {
+//        // retrieve parameters
+//        System.out.println("Enter body name:");
+//        String name = input.next();
+//        System.out.println("\n Enter mass [kg]: ");
+//        double mass = input.nextDouble();
+//        System.out.println("\n Enter initial x coordinate [m]: ");
+//        double xpos = input.nextDouble();
+//        System.out.println("\n Enter initial y coordinate [m]: ");
+//        double ypos = input.nextDouble();
+//        System.out.println("\n Enter initial x velocity [m/s]: ");
+//        double xvel = input.nextDouble();
+//        System.out.println("\n Enter initial y velocity [m/s]: ");
+//        double yvel = input.nextDouble();
+//        System.out.println("\n Enter desired color: ");
+//        String color = input.next();
+//        Color desiredColor = handleColor(color.toLowerCase());
+//
+//        // add planet to solar system
+//        Planet planetToAdd = new Planet(mass, xpos, ypos, xvel, yvel, name, desiredColor);
+        solarSystem.addPlanet(planet);
+//        return name;
     }
 
     // EFFECTS: returns a Color that matches user input, or default to magenta
-    private Color handleColor(String color) {
-        if (color.equals("black")) {
-            return Color.black;
-        } else if (color.equals("blue")) {
+    protected static Color handleColor(String color) {
+         if (color.equals("blue")) {
             return Color.blue;
         } else if (color.equals("gray")) {
             return Color.gray;
@@ -200,16 +217,16 @@ public class GravityApp {
         String command = input.next();
         command = command.toLowerCase();
         if (command.equals("load")) {
-            handleSolarSystem(solarSystemFromFile);
+            handleSolarSystem();
         } else if (command.equals("centauri")) {
             loadCentauriSystem();
-            handleSolarSystem(solarSystem);
+            handleSolarSystem();
         } else if (command.equals("back")) {
             runGravity();
         }
     }
 
-    private void loadCentauriSystem() {
+    protected static void loadCentauriSystem() {
         solarSystem = new SolarSystem();
         Planet centauriA
                 = new Planet((2.2 * Math.pow(10, 30)),
@@ -228,7 +245,7 @@ public class GravityApp {
 
     // MODIFIES: this
     // EFFECTS: either prints Planets in system or evolves system
-    private void handleSolarSystem(SolarSystem system) {
+    private void handleSolarSystem() {
         System.out.println("\n What would you like to do with your Solar System?");
         System.out.println("\t inspect -> View list of bodies in your system");
         System.out.println("\t evolve -> Watch your system move");
@@ -236,11 +253,11 @@ public class GravityApp {
         String command = input.next();
         command = command.toLowerCase();
         if (command.equals("inspect")) {
-            printPlanetList(system);
-            handleSolarSystem(system);
+            printPlanetList();
+            handleSolarSystem();
         } else if (command.equals("evolve")) {
-            evolve(system);
-            handleSolarSystem(system);
+            evolve();
+            handleSolarSystem();
         } else if (command.equals("back")) {
             runGravity();
         } else {
@@ -249,49 +266,39 @@ public class GravityApp {
     }
 
     // EFFECTS: prints names of Planets in the solar system
-    public void printPlanetList(SolarSystem system) {
+    public void printPlanetList() {
         System.out.println("\n Your solar system contains:");
-        int numLoops = system.getNumPlanets();
+        int numLoops = solarSystem.getNumPlanets();
         for (int index = 0; index < numLoops; index++) {
-            String name = system.getPlanetName(index);
+            String name = solarSystem.getPlanetName(index);
             System.out.println("\t -" + name);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: evolves system and prints changing parameters to the screen for INTERVAL_STOP ms
-    public void evolve(SolarSystem system) {
-        Timer appRunTimer = new Timer(INTERVAL_RUN, new ActionListener() {
+    public void evolve() {
+        timer = new Timer(INTERVAL_RUN, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                system.updateForces();
-                system.updateVelocities();
-                system.updatePositions();
-                printPlanetMotion(system);
+                solarSystem.updateForces();
+                solarSystem.updateVelocities();
+                solarSystem.updatePositions();
             }
         }
         );
-        Timer appStopTimer = new Timer(INTERVAL_STOP, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                appRunTimer.stop();
-            }
-        }
-        );
-        appRunTimer.start();
-        appStopTimer.setRepeats(false);
-        appStopTimer.start();
+        timer.start();
     }
 
     // EFFECTS: prints Planet name, coordinates, and speed for all planets in solar system
-    public void printPlanetMotion(SolarSystem system) {
-        int numLoops = system.getNumPlanets();
+    public void printPlanetMotion() {
+        int numLoops = solarSystem.getNumPlanets();
         for (int index = 0; index < numLoops; index++) {
-            String name = system.getPlanetName(index);
-            double xpos = system.getPlanet(index).getXPosition();
-            double ypos = system.getPlanet(index).getYPosition();
-            double velocityX = system.getPlanet(index).getXVelocity();
-            double velocityY = system.getPlanet(index).getYVelocity();
+            String name = solarSystem.getPlanetName(index);
+            double xpos = solarSystem.getPlanet(index).getXPosition();
+            double ypos = solarSystem.getPlanet(index).getYPosition();
+            double velocityX = solarSystem.getPlanet(index).getXVelocity();
+            double velocityY = solarSystem.getPlanet(index).getYVelocity();
             double velocity = Math.sqrt((Math.pow(velocityX, 2) + Math.pow(velocityY, 2)));
             System.out.println(name + " Position (" + xpos + ", " + ypos + ")");
             System.out.println("with speed " + velocity + " meters per second");

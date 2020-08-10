@@ -66,4 +66,12 @@ public class SolarSystem {
             body.updatePosition();
         }
     }
+
+    // MODIFIES: this
+    // EFFECTS: updates orbital parameters for all planets in the solar system in correct order
+    public void move() {
+        updateForces();
+        updateVelocities();
+        updatePositions();
+    }
 }
