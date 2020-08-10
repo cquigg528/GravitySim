@@ -8,8 +8,6 @@ import javax.swing.*;
 
 import model.Planet;
 
-import static ui.GravityApp.*;
-
 // Represents the panel in which the scoreboard is displayed
 public class MenuPanel extends JPanel implements ActionListener {
 
@@ -29,6 +27,8 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton inspectButton;
     private JButton saveButton;
     private JButton stopButton;
+    
+    private GravityApp gravityApp;
 
 
 
@@ -45,6 +45,12 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         evolveButton = new JButton("evolve");
         evolveButton.addActionListener(this);
+
+        inspectButton = new JButton("inspect");
+        inspectButton.addActionListener(this);
+
+        saveButton = new JButton("save");
+        saveButton.addActionListener(this);
 
     }
 
@@ -64,6 +70,10 @@ public class MenuPanel extends JPanel implements ActionListener {
             loadStored();
         } else if (e.getSource().equals(evolveButton)) {
             evolveSystem();
+        } else if (e.getSource().equals(inspectButton)) {
+            showInspectSystemPanel();
+        } else if (e.getSource().equals(saveButton)) {
+            saveSystem();
         }
     }
 
@@ -90,9 +100,9 @@ public class MenuPanel extends JPanel implements ActionListener {
         double xvelInput = Double.parseDouble(velocityFieldY.getText());
         double yvelInput = Double.parseDouble(velocityFieldY.getText());
         String nameInput = nameField.getText();
-        Color colorInput = handleColor(colorField.getText());
+        Color colorInput = gravityApp.handleColor(colorField.getText());
 
-        GravityApp.addAPlanet(new Planet(massInput, xposInput, yposInput, xvelInput, yvelInput, nameInput, colorInput));
+        gravityApp.addAPlanet(new Planet(massInput, xposInput, yposInput, xvelInput, yvelInput, nameInput, colorInput));
 
         if (option == JOptionPane.YES_OPTION) {
             newSystem();
@@ -125,16 +135,38 @@ public class MenuPanel extends JPanel implements ActionListener {
     }
 
     private void loadFromFile() {
-        GravityApp.loadSystemsFromFile();
+        gravityApp.loadSystemsFromFile();
     }
 
     private void loadStored() {
-        GravityApp.loadCentauriSystem();
+        gravityApp.loadCentauriSystem();
     }
 
     private void evolveSystem() {
-        SimPanel.paintComponent();
+        // TODO!!!!
+        gravityApp.evolve();
     }
+
+    private void showInspectSystemPanel() {
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setBorder(BorderFactory.createTitledBorder("Solar System Bodies"));
+        int numPlanets = gravityApp.solarSystem.getNumPlanets();
+        for (int i = 0; i < numPlanets; i++) {
+            panel.add(new JLabel("Name: " + gravityApp.solarSystem.getPlanetName(i)));
+            panel.add(new JLabel("Mass: " + gravityApp.solarSystem.getPlanet(i).getMass() + " kg"));
+            panel.add(new JLabel("Color: " + gravityApp.solarSystem.getPlanet(i).getColor().toString()));
+        }
+        JOptionPane.showMessageDialog(frame, panel);
+    }
+
+    private void saveSystem() {
+        gravityApp.save();
+    }
+
+
+
+
 
 
 }
