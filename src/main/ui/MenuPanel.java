@@ -7,7 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import model.Planet;
+import model.SolarSystem;
+import model.SolarSystem.*;
 
+import static model.SolarSystem.removePlanet;
 import static ui.GravityApp.*;
 
 // Represents the panel in which the menu buttons are displayed
@@ -29,13 +32,11 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton inspectButton;
     private JButton saveButton;
     private JButton deleteButton;
-
+    private JPanel menuArea = new JPanel();
     private GravityApp gravityApp;
 
 
-
     public MenuPanel(GravityApp gravityApp) {
-        JPanel menuArea = new JPanel();
         menuArea.setLayout(new FlowLayout());
         add(menuArea, BorderLayout.NORTH);
         newSystemButton = new JButton("new");
@@ -45,7 +46,6 @@ public class MenuPanel extends JPanel implements ActionListener {
         loadSystemFromFileButton = new JButton("load file");
         menuArea.add(loadSystemFromFileButton);
         loadSystemFromFileButton.addActionListener(this);
-
 
         loadSystemFromProgramButton = new JButton("load stored");
         menuArea.add(loadSystemFromProgramButton);
@@ -63,38 +63,40 @@ public class MenuPanel extends JPanel implements ActionListener {
         menuArea.add(saveButton);
         saveButton.addActionListener(this);
 
+        deleteButton = new JButton("delete a planet");
+        menuArea.add(deleteButton);
+        deleteButton.addActionListener(this);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(newSystemButton)) {
+        if (e.getSource() == newSystemButton) {
             newSystem();
-        } else if (e.getSource().equals(loadSystemFromFileButton)) {
+        } else if (e.getSource() == loadSystemFromFileButton) {
             loadFromFile();
-        } else if (e.getSource().equals(loadSystemFromProgramButton)) {
+        } else if (e.getSource() == loadSystemFromProgramButton) {
             loadStored();
-        } else if (e.getSource().equals(evolveButton)) {
+        } else if (e.getSource() == evolveButton) {
             evolveSystem();
-        } else if (e.getSource().equals(inspectButton)) {
+        } else if (e.getSource() == inspectButton) {
             showInspectSystemPanel();
-        } else if (e.getSource().equals(saveButton)) {
+        } else if (e.getSource() == saveButton) {
             saveSystem();
+        } else if (e.getSource() == deleteButton) {
+            deletePlanet();
         }
     }
 
     private void newSystem() {
+        if (gravityApp.solarSystem == null) {
+            gravityApp.solarSystem = new SolarSystem();
+        }
+
         panel = new JPanel();
         panel.setLayout(new GridLayout(8, 1, 1, 1));
 
-        massField = new JTextField(10);
-        positionFieldX = new JTextField(4);
-        positionFieldY = new JTextField(3);
-        velocityFieldX = new JTextField(5);
-        velocityFieldY = new JTextField(5);
-        nameField = new JTextField(30);
-        colorField = new JTextField(10);
-
-        initializeFields();
+        panel = initializeFields(panel);
 
         int option = JOptionPane.showConfirmDialog(
                 frame, panel, "Add a planet", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -107,6 +109,7 @@ public class MenuPanel extends JPanel implements ActionListener {
         String nameInput = nameField.getText();
         Color colorInput = gravityApp.handleColor(colorField.getText());
 
+
         gravityApp.addAPlanet(new Planet(massInput, xposInput, yposInput, xvelInput, yvelInput, nameInput, colorInput));
 
         if (option == JOptionPane.YES_OPTION) {
@@ -114,7 +117,15 @@ public class MenuPanel extends JPanel implements ActionListener {
         }
     }
 
-    private void initializeFields() {
+    private JPanel initializeFields(JPanel panel) {
+        massField = new JTextField(10);
+        positionFieldX = new JTextField(4);
+        positionFieldY = new JTextField(3);
+        velocityFieldX = new JTextField(5);
+        velocityFieldY = new JTextField(5);
+        nameField = new JTextField(30);
+        colorField = new JTextField(10);
+
         panel.add(new JLabel("Mass(kg)"));
         panel.add(massField);
 
@@ -137,10 +148,12 @@ public class MenuPanel extends JPanel implements ActionListener {
         panel.add(colorField);
 
         panel.add(new JLabel("Add another planet?"));
+
+        return panel;
     }
 
     private void loadFromFile() {
-        gravityApp.loadSystemsFromFile();
+        loadSystemsFromFile();
     }
 
     private void loadStored() {
@@ -171,9 +184,18 @@ public class MenuPanel extends JPanel implements ActionListener {
         save();
     }
 
+    private void deletePlanet() {
+        panel = new JPanel();
+        panel.add(new JLabel("Enter planet name to delete: "));
+        JTextField deleteField = new JTextField(30);
+        panel.add(deleteField);
 
+        int option = JOptionPane.showConfirmDialog(
+                frame, panel, "Delete a planet", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
+        String nameToDelete = deleteField.getText();
 
+        GravityApp.solarSystem.removePlanet(nameToDelete);
 
-
+    }
 }

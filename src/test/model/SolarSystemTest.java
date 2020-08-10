@@ -42,10 +42,9 @@ public class SolarSystemTest {
 
     @Test
     public void testGetNumPlanets() {
+        assertEquals(3, testSolarSystem.getNumPlanets());
         SolarSystem emptySolarSystem = new SolarSystem();
-
-        assertEquals(emptySolarSystem.getNumPlanets(), 0);
-        assertEquals(testSolarSystem.getNumPlanets(), 3);
+        assertEquals(0, emptySolarSystem.getNumPlanets());
     }
 
     @Test
@@ -166,5 +165,24 @@ public class SolarSystemTest {
 
         assertEquals(testPlanet3.getXPosition(), testPlanet3separate.getXPosition(), DELTA);
         assertEquals(testPlanet3.getYPosition(), testPlanet3separate.getYPosition(), DELTA);
+    }
+
+    @Test
+    public void testRemovePlanet() {
+        assertTrue(testSolarSystem.getNumPlanets() == 3);
+
+        // check only removes right name
+        testSolarSystem.removePlanet("tes2");
+        assertTrue(testSolarSystem.getNumPlanets() == 3);
+
+        // check removes one
+        testSolarSystem.removePlanet("test1");
+        assertTrue(testSolarSystem.getNumPlanets() == 2);
+
+        // check removes another, and right name
+        testSolarSystem.removePlanet("test2");
+        assertTrue(testSolarSystem.getNumPlanets() == 1);
+
+        assertTrue(testSolarSystem.getPlanetName(0) == "test3");
     }
 }

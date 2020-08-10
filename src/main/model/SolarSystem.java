@@ -2,13 +2,14 @@ package model;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Represents a collection of Planets that comprise a solar system
 public class SolarSystem {
     public static double centralMass = 1.98847 * Math.pow(10, 30);
     public static double gravitationalConstant = 6.67408 * Math.pow(10, -11);
 
-    public ArrayList<Planet> solarSystem;
+    public static ArrayList<Planet> solarSystem;
 
     // constructor
     // EFFECTS: creates new empty solar system
@@ -73,5 +74,17 @@ public class SolarSystem {
         updateForces();
         updateVelocities();
         updatePositions();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes planet with matching name from solar system
+    public static void removePlanet(String name) {
+        List<Planet> removedList = new ArrayList<>();
+        for (Planet planet : solarSystem) {
+            if (name.equals(planet.getName())) {
+                removedList.add(planet);
+            }
+        }
+        solarSystem.removeAll(removedList);
     }
 }
