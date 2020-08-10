@@ -10,6 +10,8 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
+import static ui.GravityApp.draw;
+
 // The panel in which the simulation is rendered
 public class SimPanel extends JPanel {
     private static final int WIDTH = 1000;
@@ -24,8 +26,12 @@ public class SimPanel extends JPanel {
     public SimPanel() {
         frame = new JFrame("Gravity");
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        frame.setBackground(Color.black);
         frame.setVisible(true);
+        frame.add(this);
+        frame.pack();
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setBackground(Color.black);
+        this.setVisible(true);
         //this.gravityApp = gravityApp;
     }
 
@@ -40,6 +46,6 @@ public class SimPanel extends JPanel {
     // MODIFIES: g
     // EFFECTS: the gravity app is drawn onto the Graphics object g
     private void drawGravity(Graphics g) {
-        gravityApp.draw(g);
+        draw(g);
     }
 }

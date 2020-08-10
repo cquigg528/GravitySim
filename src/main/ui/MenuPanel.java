@@ -10,7 +10,7 @@ import model.Planet;
 
 import static ui.GravityApp.*;
 
-// Represents the panel in which the scoreboard is displayed
+// Represents the panel in which the menu buttons are displayed
 public class MenuPanel extends JPanel implements ActionListener {
 
     private JFrame frame;
@@ -28,6 +28,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton evolveButton;
     private JButton inspectButton;
     private JButton saveButton;
+    private JButton deleteButton;
 
     private GravityApp gravityApp;
 

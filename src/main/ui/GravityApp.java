@@ -68,7 +68,7 @@ public class GravityApp extends JFrame {
 //        System.out.println("\n See you later!");
 //    }
 
-    public void draw(Graphics g) {
+    public static void draw(Graphics g) {
         int numLoops = solarSystem.getNumPlanets();
         for (int i = 0; i < numLoops; i++) {
             solarSystem.getPlanet(i).drawPlanet(g);
@@ -239,14 +239,14 @@ public class GravityApp extends JFrame {
     protected static void loadCentauriSystem() {
         solarSystem = new SolarSystem();
         Planet centauriA
-                = new Planet((2.2 * Math.pow(10, 30)),
-                200, 10, 10000, 10000, "Centauri A", Color.yellow);
+                = new Planet((2.2 * Math.pow(10, 8)),
+                400, 400, 0, 0, "Centauri A", Color.yellow);
         Planet centauriB
-                = new Planet((0.5 * Math.pow(10, 30)),
-                500, 600, -10000, -10000, "Centauri b", Color.blue);
+                = new Planet((0.5 * Math.pow(10, 10)),
+                500, 600, 0, 0, "Centauri b", Color.blue);
         Planet proximaCentauri
-                = new Planet((0.1 * Math.pow(10, 29)),
-                300, 150, -1500, 8000, "Proxima Centauri", Color.pink);
+                = new Planet((0.1 * Math.pow(10, 5)),
+                800, 150, 0, 0, "Proxima Centauri", Color.pink);
 
         solarSystem.addPlanet(centauriA);
         solarSystem.addPlanet(centauriB);
