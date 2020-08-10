@@ -8,6 +8,9 @@ import javax.swing.*;
 
 import model.Planet;
 
+import static ui.GravityApp.loadCentauriSystem;
+import static ui.GravityApp.save;
+
 // Represents the panel in which the scoreboard is displayed
 public class MenuPanel extends JPanel implements ActionListener {
 
@@ -26,30 +29,38 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton evolveButton;
     private JButton inspectButton;
     private JButton saveButton;
-    private JButton stopButton;
-    
+
     private GravityApp gravityApp;
 
 
 
     public MenuPanel(GravityApp gravityApp) {
+        JPanel menuArea = new JPanel();
+        menuArea.setLayout(new FlowLayout());
+        add(menuArea, BorderLayout.NORTH);
         newSystemButton = new JButton("new");
+        menuArea.add(newSystemButton);
         newSystemButton.addActionListener(this);
 
         loadSystemFromFileButton = new JButton("load file");
+        menuArea.add(loadSystemFromFileButton);
         loadSystemFromFileButton.addActionListener(this);
 
 
         loadSystemFromProgramButton = new JButton("load stored");
+        menuArea.add(loadSystemFromProgramButton);
         loadSystemFromProgramButton.addActionListener(this);
 
         evolveButton = new JButton("evolve");
+        menuArea.add(evolveButton);
         evolveButton.addActionListener(this);
 
         inspectButton = new JButton("inspect");
+        menuArea.add(inspectButton);
         inspectButton.addActionListener(this);
 
         saveButton = new JButton("save");
+        menuArea.add(saveButton);
         saveButton.addActionListener(this);
 
     }
@@ -57,13 +68,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(newSystemButton)) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    newSystem();
-                }
-            }
-            );
+            newSystem();
         } else if (e.getSource().equals(loadSystemFromFileButton)) {
             loadFromFile();
         } else if (e.getSource().equals(loadSystemFromProgramButton)) {
@@ -79,7 +84,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     private void newSystem() {
         panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 8, 2, 2));
+        panel.setLayout(new GridLayout(8, 1, 1, 1));
 
         massField = new JTextField(10);
         positionFieldX = new JTextField(4);
@@ -139,12 +144,15 @@ public class MenuPanel extends JPanel implements ActionListener {
     }
 
     private void loadStored() {
-        gravityApp.loadCentauriSystem();
+        loadCentauriSystem();
     }
 
     private void evolveSystem() {
         // TODO!!!!
-        gravityApp.evolve();
+        //gravityApp.evolve();
+
+        panel = new SimPanel(gravityApp);
+        panel.repaint();
     }
 
     private void showInspectSystemPanel() {
@@ -156,12 +164,13 @@ public class MenuPanel extends JPanel implements ActionListener {
             panel.add(new JLabel("Name: " + gravityApp.solarSystem.getPlanetName(i)));
             panel.add(new JLabel("Mass: " + gravityApp.solarSystem.getPlanet(i).getMass() + " kg"));
             panel.add(new JLabel("Color: " + gravityApp.solarSystem.getPlanet(i).getColor().toString()));
+            panel.add(Box.createVerticalStrut(6));
         }
         JOptionPane.showMessageDialog(frame, panel);
     }
 
     private void saveSystem() {
-        gravityApp.save();
+        save();
     }
 
 

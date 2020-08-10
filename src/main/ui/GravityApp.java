@@ -32,10 +32,11 @@ public class GravityApp extends JFrame {
     public GravityApp() {
         super("Gravity Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        simPanel = new SimPanel(this);
+        setUndecorated(false);
+        setLocationRelativeTo(null);
+        //simPanel = new SimPanel(this);
         menu = new MenuPanel(this);
-        add(simPanel);
+        //add(simPanel);
         add(menu, BorderLayout.NORTH);
         pack();
         setVisible(true);
@@ -67,7 +68,7 @@ public class GravityApp extends JFrame {
 //        System.out.println("\n See you later!");
 //    }
 
-    public static void draw(Graphics g) {
+    public void draw(Graphics g) {
         int numLoops = solarSystem.getNumPlanets();
         for (int i = 0; i < numLoops; i++) {
             solarSystem.getPlanet(i).drawPlanet(g);
@@ -85,7 +86,7 @@ public class GravityApp extends JFrame {
 //        }
 //    }
 
-    protected void save() {
+    protected static void save() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -166,7 +167,7 @@ public class GravityApp extends JFrame {
 
     // MODIFIES: Planet object and this
     // EFFECTS: adds a user-defined Planet to this
-    protected void addAPlanet(Planet planet) {
+    protected static void addAPlanet(Planet planet) {
 //        // retrieve parameters
 //        System.out.println("Enter body name:");
 //        String name = input.next();
@@ -186,13 +187,16 @@ public class GravityApp extends JFrame {
 //
 //        // add planet to solar system
 //        Planet planetToAdd = new Planet(mass, xpos, ypos, xvel, yvel, name, desiredColor);
+        if (solarSystem == (null)) {
+            solarSystem = new SolarSystem();
+        }
         solarSystem.addPlanet(planet);
 //        return name;
     }
 
     // EFFECTS: returns a Color that matches user input, or default to magenta
-    protected Color handleColor(String color) {
-         if (color.equals("blue")) {
+    protected static Color handleColor(String color) {
+        if (color.equals("blue")) {
             return Color.blue;
         } else if (color.equals("gray")) {
             return Color.gray;
@@ -232,7 +236,7 @@ public class GravityApp extends JFrame {
 //        }
 //    }
 
-    protected void loadCentauriSystem() {
+    protected static void loadCentauriSystem() {
         solarSystem = new SolarSystem();
         Planet centauriA
                 = new Planet((2.2 * Math.pow(10, 30)),
@@ -290,6 +294,7 @@ public class GravityApp extends JFrame {
                 solarSystem.updateForces();
                 solarSystem.updateVelocities();
                 solarSystem.updatePositions();
+                simPanel.repaint();
             }
         }
         );
