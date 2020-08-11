@@ -21,8 +21,7 @@ public class SimPanel extends JPanel {
     private JFrame frame;
 
     // Constructs a panel to run the application
-    // EFFECTS: sets size and background color of panel,
-    // updates this with the game to be displayed
+    // EFFECTS: sets size and background color of panel, adds this to a new frame
     public SimPanel() {
         frame = new JFrame("Gravity");
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -35,6 +34,8 @@ public class SimPanel extends JPanel {
         //this.gravityApp = gravityApp;
     }
 
+    // MODIFIES: g
+    // EFFECTS: assigns Graphics, calls helper method to render planets
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -42,7 +43,6 @@ public class SimPanel extends JPanel {
         drawGravity(g);
     }
 
-    // Draws the gravity app
     // MODIFIES: g
     // EFFECTS: the gravity app is drawn onto the Graphics object g
     private void drawGravity(Graphics g) {

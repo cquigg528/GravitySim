@@ -137,6 +137,8 @@ public class Planet implements Saveable {
         this.ypos += this.yvel;
     }
 
+
+    // EFFECTS: writes planet fields to file
     @Override
     public void save(PrintWriter printWriter) {
         printWriter.print(mass);
@@ -156,12 +158,5 @@ public class Planet implements Saveable {
         printWriter.print(name);
         printWriter.print(Reader.DELIMITER);
         printWriter.println(color);
-    }
-
-    public void drawPlanet(Graphics g) {
-        Color savedCol = g.getColor();
-        g.setColor(color);
-        g.fillOval((int)xpos, (int)ypos, 10, 10);
-        g.setColor(savedCol);
     }
 }

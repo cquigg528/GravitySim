@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-// Console interaction for Gravity application
+// Solar system simulator GUI
 public class GravityApp extends JFrame {
     private static final String SYSTEMS_FILE = "./data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
@@ -26,27 +26,34 @@ public class GravityApp extends JFrame {
     private static Timer timer;
 
     // constructor
-    // EFFECTS: runs gravity application
+    // EFFECTS: creates frame with MenuPanel
     public GravityApp() {
         super("Gravity Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(false);
         setLocationRelativeTo(null);
-        //simPanel = new SimPanel(this);
         menu = new MenuPanel(this);
-        //add(simPanel);
         add(menu, BorderLayout.NORTH);
         pack();
         setVisible(true);
     }
 
+    // MODIFIES: g
+    // EFFECTS: draws each planet onto g
     public static void draw(Graphics g) {
         int numLoops = solarSystem.getNumPlanets();
         for (int i = 0; i < numLoops; i++) {
-            solarSystem.getPlanet(i).drawPlanet(g);
+            Color savedCol = g.getColor();
+            g.setColor(solarSystem.getPlanet(i).getColor());
+            g.fillOval((int)solarSystem.getPlanet(i).getXPosition(),
+                    (int)solarSystem.getPlanet(i).getYPosition(),
+                    15,
+                    15);
+            g.setColor(savedCol);
         }
     }
 
+    // EFFECTS: saves all planets in solarSystem to systems.txt
     protected static void save() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
@@ -72,8 +79,7 @@ public class GravityApp extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads solar systems from SYSTEMS_FILE, if that file exists,
-    // otherwise only loaded system will be Centauri, which is hard coded
+    // EFFECTS: loads solar systems from SYSTEMS_FILE, if that file exists
     protected static void loadSystemsFromFile() {
         try {
             List<Planet> planets = Reader.readPlanets(new File(SYSTEMS_FILE));
@@ -119,6 +125,8 @@ public class GravityApp extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads this with 3 planets
     protected static void loadCentauriSystem() {
         solarSystem = new SolarSystem();
         Planet centauriA
@@ -137,7 +145,7 @@ public class GravityApp extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: evolves system and prints changing parameters to the screen for INTERVAL_STOP ms
+    // EFFECTS: updates system and draws graphics at INTERVAL_RUN intervals
     public static void evolve() {
         simPanel = new SimPanel();
         timer = new Timer(INTERVAL_RUN, new ActionListener() {

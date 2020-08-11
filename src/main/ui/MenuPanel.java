@@ -8,9 +8,7 @@ import javax.swing.*;
 
 import model.Planet;
 import model.SolarSystem;
-import model.SolarSystem.*;
 
-import static model.SolarSystem.removePlanet;
 import static ui.GravityApp.*;
 
 // Represents the panel in which the menu buttons are displayed
@@ -36,6 +34,8 @@ public class MenuPanel extends JPanel implements ActionListener {
     private GravityApp gravityApp;
 
 
+    // Constructor
+    // EFFECTS: Adds all buttons and associated ActionListeners to menuPanel
     public MenuPanel(GravityApp gravityApp) {
         menuArea.setLayout(new FlowLayout());
         add(menuArea, BorderLayout.NORTH);
@@ -69,6 +69,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: determine how the menuPanel responds to a button press
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newSystemButton) {
@@ -88,6 +90,8 @@ public class MenuPanel extends JPanel implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates new panel for user input, can add multiple planets to solar system
     private void newSystem() {
         if (gravityApp.solarSystem == null) {
             gravityApp.solarSystem = new SolarSystem();
@@ -117,6 +121,8 @@ public class MenuPanel extends JPanel implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: helper method to add fields and labels to the add planet window
     private JPanel initializeFields(JPanel panel) {
         massField = new JTextField(10);
         positionFieldX = new JTextField(4);
@@ -152,20 +158,26 @@ public class MenuPanel extends JPanel implements ActionListener {
         return panel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads solar system saved in systems.txt
     private void loadFromFile() {
         loadSystemsFromFile();
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads solar system hard-coded in program
     private void loadStored() {
         loadCentauriSystem();
     }
 
+    // MODIFIES: this
+    // EFFECTS: calls helper to create and run new simulation window
     private void evolveSystem() {
-        // TODO!!!!
         evolve();
-
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates new window to show list of current planets
     private void showInspectSystemPanel() {
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -180,10 +192,13 @@ public class MenuPanel extends JPanel implements ActionListener {
         JOptionPane.showMessageDialog(frame, panel);
     }
 
+    // EFFECTS: calls helper method to save current solar system to systems.txt
     private void saveSystem() {
         save();
     }
 
+    // MODIFIES: this
+    // EFFECTS: opens new window for user to enter name of planet they wish to delete
     private void deletePlanet() {
         panel = new JPanel();
         panel.add(new JLabel("Enter planet name to delete: "));
