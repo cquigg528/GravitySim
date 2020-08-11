@@ -185,4 +185,41 @@ public class SolarSystemTest {
 
         assertTrue(testSolarSystem.getPlanetName(0) == "test3");
     }
+
+    @Test
+    public void testMove() {
+        // move separate but identical planets to test against
+        testPlanet1separate.updateForce(testPlanet2separate);
+        testPlanet1separate.updateForce(testPlanet3separate);
+
+        testPlanet2separate.updateForce(testPlanet1separate);
+        testPlanet2separate.updateForce(testPlanet3separate);
+
+        testPlanet3separate.updateForce(testPlanet1separate);
+        testPlanet3separate.updateForce(testPlanet2separate);
+
+        testPlanet1separate.updateVelocity();
+        testPlanet2separate.updateVelocity();
+        testPlanet3separate.updateVelocity();
+
+        // update positions individually to test against
+        testPlanet1separate.updatePosition();
+        testPlanet2separate.updatePosition();
+        testPlanet3separate.updatePosition();
+
+        // call method to test
+        testSolarSystem.move();
+
+        // verify outcomes
+        assertEquals(testPlanet1.getXPosition(), testPlanet1separate.getXPosition(), DELTA);
+        assertEquals(testPlanet1.getYPosition(), testPlanet1separate.getYPosition(), DELTA);
+
+        assertEquals(testPlanet2.getXPosition(), testPlanet2separate.getXPosition(), DELTA);
+        assertEquals(testPlanet2.getYPosition(), testPlanet2separate.getYPosition(), DELTA);
+
+        assertEquals(testPlanet3.getXPosition(), testPlanet3separate.getXPosition(), DELTA);
+        assertEquals(testPlanet3.getYPosition(), testPlanet3separate.getYPosition(), DELTA);
+
+
+    }
 }
