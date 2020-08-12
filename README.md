@@ -63,3 +63,11 @@ create planets with parameters necessary for an interesting simulation.
 saved to the file.
 
 - You can reload the state of my application by clicking the "reload" button.
+
+---
+
+### Phase 4: Task 2
+
+My project has a bi-directional association between the GravityApp class, and the MenuPanel class.  GravityApp extends
+JFrame, and has a MenuPanel field that is used to add the MenuPanel JPanel to the JFrame.  MenuPanel has a GravityApp
+field that the JPanel uses to reset the GravityApp solarSystem, and calls GravityApp methods handleColor and addAPlanet.

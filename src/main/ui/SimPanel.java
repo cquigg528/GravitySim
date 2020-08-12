@@ -31,7 +31,6 @@ public class SimPanel extends JPanel {
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(Color.black);
         this.setVisible(true);
-        //this.gravityApp = gravityApp;
     }
 
     // MODIFIES: g
