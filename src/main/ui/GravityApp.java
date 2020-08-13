@@ -3,27 +3,25 @@ package ui;
 import model.Planet;
 import model.SolarSystem;
 import persistence.Reader;
-import persistence.Writer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 // Solar system simulator GUI
 public class GravityApp extends JFrame {
-    private static final String SYSTEMS_FILE = "./data/systems.txt";
+    protected static final String SYSTEMS_FILE = "./data/systems.txt";
     private static final int INTERVAL_RUN = 20;            // interval between updated calculations
     protected static SolarSystem solarSystem;
 
     private static SimPanel simPanel;
-    private MenuPanel menu;
     private static Timer timer;
+    private static SaveSystemPanel saveSystemPanel;
+    private MenuPanel menu;
 
     // constructor
     // EFFECTS: creates frame with MenuPanel
@@ -54,28 +52,8 @@ public class GravityApp extends JFrame {
     }
 
     // EFFECTS: saves all planets in solarSystem to systems.txt
-    protected static void save() {
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-
-        int i = 0;
-        try {
-            Writer writer = new Writer(new File(SYSTEMS_FILE));
-            while (i < solarSystem.getNumPlanets()) {
-                Planet planet = solarSystem.getPlanet(i);
-                writer.write(planet);
-                i++;
-            }
-            writer.close();
-            panel.add(new JLabel("System saved to " + SYSTEMS_FILE));
-            JOptionPane.showMessageDialog(frame, panel);
-        } catch (FileNotFoundException e) {
-            panel.add(new JLabel("Unable to save to " + SYSTEMS_FILE));
-            JOptionPane.showMessageDialog(frame, panel);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    protected static void showSaveSystemPanel() {
+        saveSystemPanel = new SaveSystemPanel();
     }
 
     // MODIFIES: this

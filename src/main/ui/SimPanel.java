@@ -4,8 +4,6 @@ import model.SolarSystem;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ public class SimPanel extends JPanel {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 800;
 
-    private GravityApp gravityApp;
     private JFrame frame;
 
     // Constructs a panel to run the application

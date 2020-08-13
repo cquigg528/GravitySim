@@ -71,3 +71,36 @@ saved to the file.
 My project has a bi-directional association between the GravityApp class, and the MenuPanel class.  GravityApp extends
 JFrame, and has a MenuPanel field that is used to add the MenuPanel JPanel to the JFrame.  MenuPanel has a GravityApp
 field that the JPanel uses to reset the GravityApp solarSystem, and calls GravityApp methods handleColor and addAPlanet.
+
+---
+
+### Phase 4: Task 3
+
+Problems I have identified in the code include:
+
+- The both the MenuPanel class, and the GravityApp class are not as cohesive as they could be.  Both classes should 
+represent a single frame with the code required for just that frame.  However, they each contain code for separate 
+frames and panels that open when the user clicks a button from the GUI.  
+
+- The MenuPanel class, SimPanel class, and GravityApp class are all too tightly coupled.  It is clear a change in 
+one of these classes could easily propagate into one or more of the others. Due to my inexperience with GUIs, I am 
+unsure how to tackle this problem, but I am aware there is too much coupling between my classes in the UI package.
+
+The two separate problems I will address in Task 3 are increasing cohesion in GravityApp, and in MenuPanel.  I 
+accomplish this by:
+
+- Created a new class, AddPlanetPanel in the UI package that accomplishes all the window display function that was 
+previously contained in MenuPanel's method newSystem().  MenuPanel now instantiates a new AddPlanetPanel in its method
+addPlanet().
+
+- Created a new class, InspectSystemPanel in the UI package that accomplishes all the window display function that was
+previously contained in MenuPanel's method showInspectSystemPanel().  showInspectSystemPanel() now instantiates a new 
+InspectSystemPanel.
+
+- Created a new class, DeletePlanetPanel in the UI package that accomplishes all the window display function that was
+previously contained in MenuPanel's method deletePlanet().  showDeletePlanetPanel() now instantiates a new 
+DeletePlanetPanel.
+
+- Created a new class, SaveSystemPanel in the UI package that accomplishes all the window display function that was
+previously contained in MenuPanel's method save().  showSaveSystemPanel() now instantiates a new 
+SaveSystemPanel.

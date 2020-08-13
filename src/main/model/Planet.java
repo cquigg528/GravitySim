@@ -6,11 +6,10 @@ import persistence.Saveable;
 import java.awt.*;
 import java.io.PrintWriter;
 
-import static model.SolarSystem.centralMass;
-import static model.SolarSystem.gravitationalConstant;
-
 // Represents a planet having a 2D position, velocity, name and color
 public class Planet implements Saveable {
+    public static double gravitationalConstant = 6.67408 * Math.pow(10, -11);
+
     public double mass;             // planet mass[kg]
     public double xpos;             // x position[meters]
     public double ypos;             // y position[meters]
@@ -20,10 +19,6 @@ public class Planet implements Saveable {
     public double netForceY;        // net force felt by planet in y direction[N]
     public String name;
     public Color color;
-
-    public double deltaT = 60;       // time step [seconds]
-    public static double coefficient = centralMass * gravitationalConstant;
-
 
     // constructor
     /* EFFECTS: creates a new planet at given position with given velocity, with color and name

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.awt.*;
 
-import static model.SolarSystem.gravitationalConstant;
+import static model.Planet.gravitationalConstant;
 import static org.junit.jupiter.api.Assertions.*;
 
 // A class to test the methods implemented in Planet
