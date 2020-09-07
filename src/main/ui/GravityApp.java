@@ -23,6 +23,7 @@ public class GravityApp extends JFrame {
     private static SaveSystemPanel saveSystemPanel;
     private MenuPanel menu;
 
+
     // constructor
     // EFFECTS: creates frame with MenuPanel
     public GravityApp() {
